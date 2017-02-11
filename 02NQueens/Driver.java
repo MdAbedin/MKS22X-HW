@@ -4,7 +4,7 @@ public class Driver{
 	Q.solve();
 	//Q.countSolutions();
 	
-	System.out.println(Q);	
-	System.out.println(Q.getSolutionCount());
+	//System.out.println(Q);
+	//System.out.println(Q.getSolutionCount());
     }
 }

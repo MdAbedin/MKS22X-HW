@@ -19,6 +19,15 @@ public class QueenBoard{
 	solveH(0);
     }
 
+    private void wait(int ms){
+	try{
+	    Thread.sleep(ms);
+	}
+	catch(Exception e){
+	    
+	}
+    }
+    
     private boolean solveH(int col){
 	if(col == board.length){
 	    return true;
@@ -27,6 +36,8 @@ public class QueenBoard{
 	for(int row = 0; row < board.length; row++){
 	    if(isValid(row, col)){
 		placeQueen(row, col);
+		System.out.println(this);
+		wait(100);
 		
 		if(solveH(col+1)){
 		    return true;
@@ -115,6 +126,7 @@ public class QueenBoard{
      *all others are displayed as underscores '_'
      */
     public String toString(){
+	System.out.print("\033[2J");
     	String b = "";
 	for(int[] r: board){
 	    for(int c: r){
