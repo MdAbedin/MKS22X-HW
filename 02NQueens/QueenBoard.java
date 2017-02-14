@@ -37,7 +37,7 @@ public class QueenBoard{
 	    if(isValid(row, col)){
 		placeQueen(row, col);
 		System.out.println(this);
-		wait(100);
+		wait(200);
 		
 		if(solveH(col+1)){
 		    return true;
@@ -107,6 +107,7 @@ public class QueenBoard{
     }
     
     public void countSolutions(){
+	clearBoard();
 	solutionCount = 0;
 
 	countH(0);
@@ -117,7 +118,6 @@ public class QueenBoard{
      *The board should be reset after this is run.    
      */
     public int getSolutionCount(){
-	clearBoard();
 	return solutionCount;
     }
     
@@ -126,7 +126,7 @@ public class QueenBoard{
      *all others are displayed as underscores '_'
      */
     public String toString(){
-	System.out.print("\033[2J");
+	System.out.print("\033[2J\033[1;1H");
     	String b = "";
 	for(int[] r: board){
 	    for(int c: r){
