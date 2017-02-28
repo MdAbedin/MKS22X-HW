@@ -13,6 +13,10 @@ public class Recursion{
     }
 
     public static double helper(double n, double guess){
+	if(n == 0){
+	    return 0;
+	}
+	
 	if(isCloseEnough(guess * guess, n)){
 	    return guess;
 	}
@@ -22,6 +26,13 @@ public class Recursion{
     }
 
     public static boolean isCloseEnough(double a, double b){
-	return Math.abs(a - b) < 10e-9;
+	if(a == 0.0){
+	    return b < 0.00000000001;
+	}
+	if(b == 0.0){
+	    return a < 0.00000000001;
+	}
+
+	return Math.abs(a - b)/a < 10e-9;
     }
 }
