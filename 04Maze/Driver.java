@@ -1,0 +1,8 @@
+public class Driver{
+    public static void main(String[] args) throws java.io.FileNotFoundException{
+	//System.out.println();
+	Maze m = new Maze(args[0]);
+	m.setAnimate(true);
+	m.solve();
+    }
+}
