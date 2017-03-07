@@ -68,12 +68,8 @@ public class Maze{
 	else{
 	    maze[y][x] = 'X';
 	}
-
-	if(animate){
-	    clearTerminal();
-	    System.out.println(this);
-	    wait(60);
-	}
+	
+	//display();
 	
 	for(int i = 1; i <= 4; i++){
 	    int r = (i%2) * (2-i);
@@ -82,23 +78,14 @@ public class Maze{
 	    if(isValid(y+r, x+c) && solve(x+c, y+r)){
 		maze[y][x] = '@';
 
-		if(animate){
-		    clearTerminal();
-		    System.out.println(this);
-		    wait(60);
-		}
-
+		//display();
+		
 		return true;
 	    }
 	}
 
 	maze[y][x] = '.';
-
-	if(animate){
-	    clearTerminal();
-	    System.out.println(this);
-	    wait(60);
-	}
+	display();
 	
 	return false;
     }
@@ -126,5 +113,13 @@ public class Maze{
 	}
 
 	return s;
+    }
+
+    public void display(){
+	if(animate){
+	    clearTerminal();
+	    System.out.println(this);
+	    wait(100);
+	}
     }
 }
