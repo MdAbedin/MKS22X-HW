@@ -1,7 +1,7 @@
 public class Driver{
     public static void main(String[] args){
 	USACO u = new USACO();
-
+	
 	if(args[0].equals("bronze")){
 	    System.out.println(u.bronze(args[1]));
 	}

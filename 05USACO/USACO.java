@@ -2,6 +2,11 @@ import java.util.*;
 import java.io.*;
 
 public class USACO{
+
+    public USACO(){
+
+    }
+    
     public int[][] pasture;
     public int lakeLevel;
 
@@ -85,23 +90,41 @@ public class USACO{
 
     /////////////////////////////////////////////////////////////////////////////////////
     
-    public char[][] field;
-    public int time;
+    public int[][] field;
     public int solutions = 0;
-
+    
     public void silverH(int r, int c, int r2, int c2, int t){
-	if(t == 0 && r == r2 && c == c2){
-	    solutions++;
-	}
-	
-	for(int i = 1; i <= 4; i++){
-	    int y = (i%2) * (2-i);
-	    int x = ((i+1)%2) * (i-3);
+	field[r][c] = 1;
 
-	    if(isInField(r+y, c+x) && isValid(r+y, c+x) && t > 0){
-		silverH(r+y, c+x, r2, c2, t-1);
+	for(int i = 0; i < t; i++){
+	    travel();
+	}
+
+	solutions = field[r2][c2];
+    }
+
+    public void travel(){
+	int[][] next = new int[field.length][field[0].length];
+	
+	for(int r = 0; r < field.length; r++){
+	    for(int c = 0; c < field[0].length; c++){
+		if(field[r][c] == 0){
+		    for(int i = 1; i <= 4; i++){
+			int y = r + (i%2) * (2-i);
+			int x = c + ((i+1)%2) * (i-3);
+			
+			if(isInField(y, x) && isValid(y, x)){
+			    next[r][c] += field[y][x];
+			}
+		    }
+		}
+		else if(field[r][c] == -1){
+		    next[r][c] = -1;
+		}
 	    }
 	}
+
+	field = next;
     }
     
     public boolean isInField(int r, int c){
@@ -109,21 +132,23 @@ public class USACO{
     }
 
     public boolean isValid(int r, int c){
-	return field[r][c] == '.';
+	return field[r][c] != -1;
     }
 
     public int silver(String filename){
 	try{
 	    Scanner s = new Scanner(new File(filename));
-	    field = new char[s.nextInt()][s.nextInt()];
-	    time = s.nextInt();
+	    field = new int[s.nextInt()][s.nextInt()];
+	    int time = s.nextInt();
 	    s.nextLine();
 
 	    for(int r = 0; r < field.length; r++){
 		String row = s.nextLine();
 
 		for(int c = 0; c < row.length(); c++){
-		    field[r][c] = row.charAt(c);
+		    if(row.charAt(c) == '*'){
+			field[r][c] = -1;
+		    }
 		}
 	    }
 
