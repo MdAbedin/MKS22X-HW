@@ -32,8 +32,8 @@ public class Quick{
 	int start = 0;
 	int end = data.length-1;
 	
-	while(index+1 != k){
-	    if(index+1 < k){
+	while(index != k){
+	    if(index < k){
 		start = index+1;
 		index = part(data, start, end);
 	    }
@@ -49,7 +49,7 @@ public class Quick{
     public static void main(String[] args){
 	Quick q = new Quick();
 	int[] a = {8,5,3,2,9,6,1,4,3,2};
-	System.out.println(q.quickselect(a, 10));
+	System.out.println(q.quickselect(a, 0));
 	System.out.println(java.util.Arrays.toString(a));
     }
 }
