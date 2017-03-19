@@ -6,27 +6,46 @@ public class Quick{
 	Random rng = new Random();
 	int pivotIndex = start + rng.nextInt(end-start+1);
 	int pivot = data[pivotIndex];
-	data[pivotIndex] = data[start];
-	data[start] = pivot;
+	data[pivotIndex] = data[end];
+	data[end] = pivot;
 
-	int greater = start+1;
-	int less = start;
-	int equal = end;
+	int current = start;
+	int equal = end-1;
 	
-	for(int i = start+1; i <= end; i++){
+	for(int i = start; i <= equal; i++){
 	    if(data[i] < pivot){
-		int high = data[greater];
-		data[greater] = data[i];
-		data[i] = high;
+		if(current != i){
+		    int next = data[current];
+		    data[current] = data[i];
+		    data[i] = next;
+		}
 
-	        less = greater++;
+		current++;
+	    }
+	    if(data[i] == pivot){
+		if(data[equal] != data[i]){
+		    data[i] = data[equal];
+		    data[equal] = pivot;
+		}
+
+		equal--;
+		i--;
 	    }
 	}
-	
-	data[start] = data[less];
-	data[less] = pivot;
 
-	return less;
+	pivotIndex = current + (end - equal)/2;
+
+	for(int i = end; i > equal; i--){
+	    if(data[current] == pivot){
+	        break;
+	    }
+	    
+	    data[i] = data[current];
+	    data[current] = pivot;
+	    current++;
+	}
+
+	return pivotIndex;
     }
 
     public static int quickselect(int[] data, int k){
