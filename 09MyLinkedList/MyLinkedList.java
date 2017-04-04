@@ -1,157 +1,168 @@
+import java.util.*;
 import java.lang.IndexOutOfBoundsException;
 
 public class MyLinkedList{
-    public LNode start;
-    public int size;
-
-    public MyLinkedList(){
-	start = null;
-	size = 0;
+    private class LNode{
+	LNode next,prev;
+	int value;
+	
+	public LNode(int value){
+	    this.value = value;
+	}
+	
+	public String toString(){
+	    return value + "";
+	}
     }
     
-    public boolean add(int value){
-	if(size == 0){
-	    start = new LNode(value);
+    LNode head = null, tail = null;
+    int size = 0;
+
+    public MyLinkedList(){
+	
+    }
+
+    public int size(){
+	return size;
+    }
+    
+    private LNode getNthNode(int n){
+	if(n < 0 || n > size){
+	    throw new IndexOutOfBoundsException();
+	}
+	
+	LNode current;
+
+	if(n <= size/2){
+	    current = head;
+
+	    for(int i = 0; i < n; i++){
+		current = current.next;
+	    }
 	}
 	else{
-	    LNode current = start;
+	    current = tail;
 
-	    while(current.next != null){
-		current = current.next();
+	    for(int i = size-1; i > n; i--){
+		current = current.prev;
 	    }
-	
-	    current.next = new LNode(value);	
 	}
 
-	size++;
-	return true;
+	return current;
     }
 
     public String toString(){
 	String s = "";
 	
 	if(size == 0){
-	    s = "[]";
+	    s = "[";
 	}
 	else{
-	    LNode current = start;
-	    s = "[" + current.getValue();
-	    current = current.next();
+	    LNode current = head;
+	    s = "[" + current.toString();
+	    current = current.next;
 	    
 	    for(int i = 1; i < size; i++){
-		s += ", " + current.getValue();
-		current = current.next();
+		s += ", " + current.toString();
+		current = current.next;
 	    }
-
-	    s += "]";
 	}
 
-	return s;
+	return s + "]";
     }
 
+    public boolean add(int value){
+	return add(size, value);
+    }
+
+    public boolean add(int index, int value){
+	if(index < 0 || index > size){
+	    throw new IndexOutOfBoundsException();
+	}
+
+	LNode L = new LNode(value);
+
+	if(size == 0){
+	    head = L;
+	    tail = L;
+	}
+	else if(index == 0){
+	    head.prev = L;
+	    L.next = head;
+	    head = L;
+	}
+	else if(index == size){
+	    tail.next = L;
+	    L.prev = tail;
+	    tail = L;
+	}
+	else{
+	    LNode N = getNthNode(index-1);
+	    L.prev = N;
+	    L.next = N.next;
+	    N.next.prev = L;
+	    N.next = L;
+	}
+
+	size++;
+	return true;
+    }
+    
     public int get(int index){
-	if(index < 0 || index >= size){
-	    throw new IndexOutOfBoundsException();
-	}
-
-	LNode current = start;
-	for(int i = 0; i < index; i++){
-	    current = current.next();
-	}
-
-	return current.getValue();
+	return getNthNode(index).value;
     }
 
-    public int set(int index, int newValue){
-	if(index < 0 || index >= size){
+    public int set(int index, int value){
+	if(index == size){
 	    throw new IndexOutOfBoundsException();
 	}
 
-	LNode current = start;
-	for(int i = 0; i < index; i++){
-	    current = current.next();
-	}
-
-	int old = current.getValue();
-	current.setValue(newValue);
-
+	LNode L = getNthNode(index);
+	int old = L.value;
+	L.value = value;
+	
 	return old;
-
     }
 
-    public int indexOf(int value){
-	LNode current = start; 
+    public int indexOf(int value){	
+	LNode current = head; 
 	
 	for(int i = 0; i < size; i++){
-	    if(current.getValue() == value){
+	    if(current.value == value){
 		return i;
 	    }
 
-	    current = current.next();
+	    current = current.next;
 	}
 
 	return -1;
     }
 
-    public void add(int index, int value){
-	if(index < 0 || index > size){
-	    throw new IndexOutOfBoundsException();
-	}
-
-	if(index == size){
-	    add(value);
-	}
-	else if(index == 0){
-	    LNode n = new LNode(value);
-	    n.setNext(start);
-	    start = n;
-	    size++;
-	}
-	else{
-	    LNode current = start;
-	    LNode n = new LNode(value);
-	    LNode old = new LNode(0);
-	
-	    for(int i = 0; i < index; i++){
-		if(i == index-1){
-		    old = current;
-		}
-
-		current = current.next();
-	    }
-
-	    n.setNext(current);
-	    old.setNext(n);
-	    size++;
-	}
-    }
-
     public int remove(int index){
-	if(index < 0 || index >= size){
+	if(index == size){
 	    throw new IndexOutOfBoundsException();
 	}
 
-	LNode current = start;
-	int old = start.getValue();
+	int old;
 	
 	if(index == 0){
-	    start = start.next();
+	    old = head.value;
+	    head = head.next;
+	    head.prev = null;
 	}
-	
-	for(int i = 0; i < index; i++){
-	    if(i == index-1){
-		old = current.next().getValue();
-		current.setNext(current.next().next());
-	    }
-
-	    current = current.next();
+	else if(index == size-1){
+	    old = tail.value;
+	    tail = tail.prev;
+	    tail.next = null;
+	}
+	else{
+	    LNode L = getNthNode(index);
+	    old = L.value;
+	    L.prev.next = L.next;
+	    L.next.prev = L.prev;
 	}
 
 	size--;
 	return old;
-    }
-    
-    public int size(){
-	return size;
     }
 }
