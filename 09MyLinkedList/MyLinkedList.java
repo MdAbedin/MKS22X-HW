@@ -1,9 +1,8 @@
 import java.util.*;
-import java.lang.IndexOutOfBoundsException;
 
-public class MyLinkedList{
+public class MyLinkedList implements Iterable<Integer>{
     private class LNode{
-	LNode next,prev;
+	LNode next = null, prev = null;
 	int value;
 	
 	public LNode(int value){
@@ -14,14 +13,42 @@ public class MyLinkedList{
 	    return value + "";
 	}
     }
+
+    private class MyLinkedListIterator implements Iterator<Integer>{
+	LNode current = head;
+
+	public boolean hasNext(){
+	    return current != null;
+	}
+
+	public Integer next(){
+	    if(hasNext()){
+		LNode old = current;
+		current = current.next;
+	    
+		return new Integer(old.value);
+	    }
+	    else{
+		throw new NoSuchElementException();
+	    }
+	}
+
+	public void remove(){
+	    throw new UnsupportedOperationException();
+	}
+    }
     
     LNode head = null, tail = null;
     int size = 0;
-
+    
     public MyLinkedList(){
 	
     }
 
+    public Iterator<Integer> iterator(){
+	return new MyLinkedListIterator();
+    }
+    
     public int size(){
 	return size;
     }
@@ -59,11 +86,11 @@ public class MyLinkedList{
 	}
 	else{
 	    LNode current = head;
-	    s = "[" + current.toString();
+	    s = "[" + current.value;
 	    current = current.next;
 	    
 	    for(int i = 1; i < size; i++){
-		s += ", " + current.toString();
+		s += ", " + current.value;
 		current = current.next;
 	    }
 	}
