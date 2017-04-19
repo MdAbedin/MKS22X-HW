@@ -166,13 +166,18 @@ public class MyLinkedList implements Iterable<Integer>{
     }
 
     public int remove(int index){
-	if(index == size){
+	if(index < 0 || index > size){
 	    throw new IndexOutOfBoundsException();
 	}
 
 	int old;
-	
-	if(index == 0){
+
+	if(size == 1){
+	    old = head.value;
+	    head = null;
+	    tail = null;
+	}
+	else if(index == 0){
 	    old = head.value;
 	    head = head.next;
 	    head.prev = null;
