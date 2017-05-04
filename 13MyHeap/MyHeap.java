@@ -33,6 +33,8 @@ public class MyHeap{
     }
 
     public String peek(){
+	if(size == 0) throw new NoSuchElementException();
+	
 	return data[1];
     }
 
