@@ -53,20 +53,30 @@ public class MyHeap{
     private void pushDown(){
 	int i = 1;
 
-	while(i != size && (data[i].compareTo(data[findChildOne(i)]) * n < 0 || data[i].compareTo(data[findChildTwo(i)]) * n < 0)){
-	    if(data[i].compareTo(data[findChildOne(i)]) * n < 0){
-		int c1 = findChildOne(i);
-		String temp = data[c1];
-		data[c1] = data[i];
-		data[i] = temp;
-		i = c1;
+	while(findChildOne(i) <= size){
+	    if(findChildTwo(i) <= size && data[findChildTwo(i)].compareTo(data[findChildOne(i)]) * n > 0){
+		if(data[i].compareTo(data[findChildTwo(i)]) * n < 0){
+		    int c2 = findChildTwo(i);
+		    String temp = data[c2];
+		    data[c2] = data[i];
+		    data[i] = temp;
+		    i = c2;
+		}
+		else{
+		    break;
+		}
 	    }
 	    else{
-		int c2 = findChildTwo(i);
-		String temp = data[c2];
-		data[c2] = data[i];
-		data[i] = temp;
-		i = c2;
+		if(data[i].compareTo(data[findChildOne(i)]) * n < 0){
+		    int c1 = findChildOne(i);
+		    String temp = data[c1];
+		    data[c1] = data[i];
+		    data[i] = temp;
+		    i = c1;
+		}
+		else{
+		    break;
+		}
 	    }
 	}
     }
@@ -96,21 +106,22 @@ public class MyHeap{
     }
 
     public boolean check(){
-	boolean valid = true;
 	int i = size;
 
 	while(i > 1){
-	    if(data[i].compareTo(data[findParent(i)]) * n > 0) valid = false;
+	    if(data[i].compareTo(data[findParent(i)]) * n > 0) return false;;
 	    i--;
 	}
 
-	return valid;
+	return true;
     }
     
     public static void main(String[] args){
 	MyHeap m = new MyHeap(false);
 	Random rng = new Random();
 
+	for(int i = 1; i < 100; i++) m.add(Integer.toString(rng.nextInt(i)));
+	for(int i = 1; i < 10; i++) m.remove();
 	for(int i = 1; i < 100; i++) m.add(Integer.toString(rng.nextInt(i)));
 	
 	System.out.println(m);
