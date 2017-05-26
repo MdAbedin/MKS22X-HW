@@ -25,7 +25,6 @@ public class MazeSolver{
 	boolean done = false;
 	
 	while(frontier.hasNext() && !done){
-	    if(animate) System.out.println(board.toString(50));
 	    Location next = frontier.next();
 
 	    if(next.getDistToGoal() == 0){
@@ -38,6 +37,7 @@ public class MazeSolver{
 
     public void process(Location l){
 	board.set(l.getRow(), l.getCol(), '.');
+	if(animate) System.out.println(board.toString(20));
 	
 	for(int i = 1; i <= 4; i++){
 	    int r = l.getRow() + (i%2) * (2-i);
@@ -45,6 +45,8 @@ public class MazeSolver{
 	    
 	    if(isValid(r, c)){
 		frontier.add(new Location(r, c, l, Location.dist(board.getStart(), r, c), Location.dist(board.getEnd(), r, c), l.getAStar()));
+		board.set(r, c, '?');
+		if(animate) System.out.println(board.toString(20));
 	    }
 	}
     }
