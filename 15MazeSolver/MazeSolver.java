@@ -65,6 +65,8 @@ public class MazeSolver{
     
     public String toString(){return board.toString();}
 
+    public String toString(int n){return board.toString(n);}
+
     public static void main(String[] args){
 	MazeSolver m = new MazeSolver(args[0], true);
 	m.solve(Integer.parseInt(args[1]));
